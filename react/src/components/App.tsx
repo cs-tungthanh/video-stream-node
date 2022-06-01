@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import backgroundImage from '../assets/background.png';
 import './App.css';
 
+const HOST = 'http://localhost:3001';
+
 const VideoPlayerContainer: React.FC<{ title: string }> = ({ title, children }) => {
     return (
         <div className="container">
@@ -17,22 +19,20 @@ const VideoPlayerContainer: React.FC<{ title: string }> = ({ title, children }) 
     );
 };
 
-const HOST = 'http://localhost:3001';
-
 export const App = () => {
-    // const [posterUrl, setPosterUrl] = useState<string>();
+    const [posterUrl, setPosterUrl] = useState<string>();
 
-    // const getVideoPoster = async () => {
-    //     const res = await fetch(`${HOST}/segments-poster`);
-    //     const blob = await res.blob();
-    //     const url = URL.createObjectURL(blob);
+    const getVideoPoster = async () => {
+        const res = await fetch(`${HOST}/segments-poster`);
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
 
-    //     setPosterUrl(url);
-    // };
+        setPosterUrl(url);
+    };
 
-    // useEffect(() => {
-    //     getVideoPoster();
-    // }, []);
+    useEffect(() => {
+        getVideoPoster();
+    }, []);
 
     return (
         <>
@@ -41,7 +41,7 @@ export const App = () => {
             </div>
 
             <VideoPlayerContainer title="Chunks">
-                <Video>
+                <Video poster={posterUrl}>
                     <source data-src={`${HOST}/video-chunk`} type="video/mp4" />
                 </Video>
             </VideoPlayerContainer>
